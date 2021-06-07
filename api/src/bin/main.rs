@@ -1,11 +1,4 @@
-use rocket::{get, launch, routes};
-
-#[launch]
-fn rocket() -> _ {
-    rocket::build().mount("/", routes![index])
-}
-
-#[get("/")]
-fn index() -> &'static str {
-    "Hello, Rocket!"
+#[rocket::main]
+async fn main() -> Result<(), rocket::Error> {
+    libapi::rocket().launch().await
 }
