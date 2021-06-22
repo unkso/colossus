@@ -14,5 +14,6 @@ path = "src/bin/main.rs"
 name = "api"
 
 [dependencies]
-rocket = { git = "https://github.com/SergioBenitez/Rocket", rev = "0d53e23" }
-sqlx = { version = "0.5", features = [ "runtime-tokio-rustls", "postgres", "macros", "migrate", "uuid", "json" ] }
+rocket = "0.5.0-rc.1"
+sqlx = { version = "0.5", features = [ "runtime-tokio-rustls", "postgres" ] }
+async-graphql = { git = "https://github.com/ELD/async-graphql", branch = "master" }
