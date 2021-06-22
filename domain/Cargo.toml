@@ -7,3 +7,8 @@ edition = "2018"
 
 [dependencies]
 sqlx = { version = "0.5", features = [ "runtime-tokio-rustls", "postgres", "macros", "migrate", "uuid", "json" ] }
+async-trait = "0.1"
+mockall = "0.9"
+
+[dev-dependencies]
+tokio = "1.0"
