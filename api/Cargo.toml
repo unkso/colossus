@@ -2,6 +2,12 @@
 name = "api"
 version = "0.1.0"
 edition = "2018"
+description = "API library and binary(ies) for the UNKSO Colossus web app"
+license = "MIT"
+repository = "https://github.com/UNKSO/Colossus"
+keywords = ["web", "rocket", "api", "app"]
+categories = ["web-programming"]
+readme = "README.md"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -14,6 +20,15 @@ path = "src/bin/main.rs"
 name = "api"
 
 [dependencies]
-rocket = "0.5.0-rc.1"
-sqlx = { version = "0.5", features = [ "runtime-tokio-rustls", "postgres" ] }
-async-graphql = { git = "https://github.com/ELD/async-graphql", branch = "master" }
+rocket = { git = "https://github.com/SergioBenitez/Rocket", branch = "master", features = ["uuid", "json"] }
+rocket_db_pools = { git = "https://github.com/SergioBenitez/Rocket", branch = "master", features = ["sqlx_postgres"] }
+sqlx = { version = "0.5", features = [ "runtime-tokio-rustls", "postgres", "macros", "migrate", "uuid", "json", "chrono" ] }
+domain = { path = "../domain", default-features = false }
+async-trait = "0.1"
+serde = { version = "1.0", features = [ "derive" ] }
+anyhow = "1.0"
+uuid = { version = "0.8", features = ["v4"] }
+
+[dev-dependencies]
+domain = { path = "../domain", features = ["mocks"] }
+mockall = "0.10"

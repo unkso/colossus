@@ -1,0 +1,2 @@
+[default.databases.primary_db]
+url = "postgres://postgres:password@localhost/colossus"
