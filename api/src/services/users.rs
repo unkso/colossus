@@ -1,6 +1,14 @@
 use domain::{repositories::Repository, user_types::UserRepository};
+use rocket::{Build, Rocket};
+use rocket_db_pools::Database;
 
-use crate::types::User;
+use crate::{
+    db::Primary,
+    services::types::{AbstractService, ServiceError},
+    types::User,
+};
+
+use super::types::AttachableService;
 
 pub type UserService = Service<UserRepository>;
 
@@ -28,6 +36,22 @@ where
             None
         }
     }
+}
+
+#[rocket::async_trait]
+impl AbstractService for UserService {
+    type Error = ServiceError;
+
+    async fn init(rocket: &Rocket<Build>) -> Result<Self, Self::Error> {
+        let pool = Primary::fetch(rocket)
+            .cloned()
+            .ok_or(ServiceError::MissingRepository)?;
+        Ok(Self::new(UserRepository::new(pool.0)))
+    }
+}
+
+impl AttachableService for UserService {
+    type Service = Self;
 }
 
 #[cfg(test)]

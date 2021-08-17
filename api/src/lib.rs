@@ -20,7 +20,7 @@ use rocket_db_pools::Database;
 use crate::{
     db::Primary,
     handlers::users::{create, get},
-    services::users::UserService,
+    services::{types::AttachableService, users::UserService},
 };
 
 /// Constructs a `Rocket<Build>` instance
@@ -29,15 +29,7 @@ use crate::{
 pub fn rocket() -> Rocket<Build> {
     rocket::build()
         .attach(Primary::init())
-        .attach(AdHoc::on_ignite("UserService", |rocket| {
-            Box::pin(async move {
-                if let Some(db) = Primary::fetch(&rocket).cloned() {
-                    rocket.manage(UserService::new(UserRepository::new(db.0)))
-                } else {
-                    rocket
-                }
-            })
-        }))
+        .attach(<UserService as AttachableService>::init())
         .mount("/", routes![index])
         .mount("/users", routes![create, get])
 }
