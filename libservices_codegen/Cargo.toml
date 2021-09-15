@@ -1,0 +1,28 @@
+[package]
+name = "libservices_codegen"
+version = "0.1.0"
+edition = "2018"
+description = "Types and macros for Rocket services"
+license = "MIT"
+repository = "https://github.com/Unkso/Colossus"
+keywords = ["web", "rocket", "api", "app"]
+categories = ["web-programming"]
+readme = "README.md"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+path = "src/lib.rs"
+name = "libservices_codegen"
+proc-macro = true
+
+[dependencies]
+syn = "1.0"
+quote = "1.0"
+proc-macro2 = "1.0"
+proc-macro2-diagnostics = "0.9"
+devise = "0.3"
+
+[dev-dependencies]
+trybuild = "1"
+libservices = { path = "../libservices" }
+rocket = { git = "https://github.com/SergioBenitez/Rocket", branch = "master" }

@@ -1,5 +1,4 @@
 use std::marker::PhantomData;
-use thiserror::Error;
 
 use rocket::{
     error,
@@ -34,6 +33,12 @@ impl<A: AttachableService> Initializer<A> {
     }
 }
 
+impl<A: AttachableService> Default for Initializer<A> {
+    fn default() -> Self {
+        Self(None, PhantomData)
+    }
+}
+
 #[rocket::async_trait]
 impl<A: AttachableService> Fairing for Initializer<A> {
     fn info(&self) -> Info {
@@ -52,11 +57,4 @@ impl<A: AttachableService> Fairing for Initializer<A> {
             }
         }
     }
-}
-
-#[derive(Error, Debug)]
-#[non_exhaustive]
-pub enum ServiceError {
-    #[error("data layer missing in shared state")]
-    MissingRepository,
 }

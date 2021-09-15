@@ -1,24 +1,21 @@
 use domain::{repositories::Repository, user_types::UserRepository};
+use libservices::{AbstractService, AttachableService, ServiceError};
 use rocket::{Build, Rocket};
 use rocket_db_pools::Database;
 
-use crate::{
-    db::Primary,
-    services::types::{AbstractService, ServiceError},
-    types::User,
-};
-
-use super::types::AttachableService;
+use crate::{db::Primary, types::User};
 
 pub type UserService = Service<UserRepository>;
 
-pub struct Service<U: Repository + Send> {
+#[derive(AttachableService)]
+#[service(alias = UserService)]
+pub struct Service<U: Repository + Send + 'static> {
     user_repo: U,
 }
 
 impl<U> Service<U>
 where
-    U: Repository,
+    U: Repository + 'static,
     User: From<<U as Repository>::Entity>,
 {
     pub fn new(user_repo: U) -> Self {
@@ -48,10 +45,6 @@ impl AbstractService for UserService {
             .ok_or(ServiceError::MissingRepository)?;
         Ok(Self::new(UserRepository::new(pool.0)))
     }
-}
-
-impl AttachableService for UserService {
-    type Service = Self;
 }
 
 #[cfg(test)]

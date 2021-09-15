@@ -2,4 +2,6 @@
 members = [
     "api/",
     "domain/",
+    "libservices/",
+    "libservices_codegen/",
 ]

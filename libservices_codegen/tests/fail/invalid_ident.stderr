@@ -1,0 +1,5 @@
+error: value in `#[service(alias = "value")]` is not a valid ident
+ --> $DIR/invalid_ident.rs:5:1
+  |
+5 | #[service(alias = 42)]
+  | ^

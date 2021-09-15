@@ -30,6 +30,8 @@ anyhow = "1.0"
 thiserror = "1.0"
 uuid = { version = "0.8", features = ["v4"] }
 
+libservices = { path = "../libservices" }
+
 [dev-dependencies]
 domain = { path = "../domain", features = ["mocks"] }
 mockall = "0.10"
