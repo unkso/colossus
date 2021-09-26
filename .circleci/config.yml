@@ -1,0 +1,21 @@
+version: 2.1
+
+orbs:
+  rust: circleci/rust@1.5.0
+
+workflows:
+  "API Tests":
+    jobs:
+      - api-lint
+      - api-test
+
+jobs:
+  api-lint:
+      machine: true
+      steps:
+        - run: rust/clippy
+  
+  api-test:
+    machine: true
+    steps:
+      - run: rust/test
