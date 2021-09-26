@@ -6,16 +6,4 @@ orbs:
 workflows:
   "API Tests":
     jobs:
-      - api-lint
-      - api-test
-
-jobs:
-  api-lint:
-      machine: true
-      steps:
-        - run: rust/clippy
-  
-  api-test:
-    machine: true
-    steps:
-      - run: rust/test
+      - rust/lint-test-build
