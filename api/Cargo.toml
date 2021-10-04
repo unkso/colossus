@@ -20,18 +20,25 @@ path = "src/bin/main.rs"
 name = "api"
 
 [dependencies]
+# HTTP and assorted services
 rocket = { git = "https://github.com/SergioBenitez/Rocket", branch = "master", features = ["uuid", "json"] }
 rocket_db_pools = { git = "https://github.com/SergioBenitez/Rocket", branch = "master", features = ["sqlx_postgres"] }
-sqlx = { version = "0.5", features = [ "runtime-tokio-rustls", "postgres", "macros", "migrate", "uuid", "json", "chrono" ] }
+
+# Database/ORM/types
 domain = { path = "../domain", default-features = false }
+sea-orm = { version = "^0", default-features = false, features = [ "sqlx-postgres", "macros", "debug-print" ] }
+
+# Utilities
 async-trait = "0.1"
 serde = { version = "1.0", features = [ "derive" ] }
 anyhow = "1.0"
-thiserror = "1.0"
-uuid = { version = "0.8", features = ["v4"] }
-
 libservices = { path = "../libservices" }
+thiserror = "1.0"
+
+# Types
+uuid = { version = "0.8", features = ["v4"] }
+chrono = "0.4"
 
 [dev-dependencies]
 domain = { path = "../domain", features = ["mocks"] }
-mockall = "0.10"
+faux = "^0.1"

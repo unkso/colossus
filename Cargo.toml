@@ -5,3 +5,4 @@ members = [
     "libservices/",
     "libservices_codegen/",
 ]
+resolver = "2"

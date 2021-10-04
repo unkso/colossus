@@ -1,6 +1,7 @@
+use chrono::Utc;
 use domain::user_types::User as DUser;
 use rocket::{get, post, serde::json::Json};
-use sqlx::types::{chrono::Utc, Uuid};
+use uuid::Uuid;
 
 use crate::{
     services::users::UserService,

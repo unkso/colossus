@@ -1,7 +1,3 @@
-/// Contains mocks for all relevant objects
-#[cfg(feature = "mocks")]
-pub mod mocks;
-
 use chrono::NaiveDateTime;
 use serde::Serialize;
 use sqlx::PgPool;
@@ -29,11 +25,13 @@ pub struct User {
 }
 
 /// Repository to do CRUD operations on users
+#[cfg_attr(any(test, feature = "mocks"), faux::create)]
 #[derive(Debug)]
 pub struct UserRepository {
     pool: PgPool,
 }
 
+#[cfg_attr(any(test, feature = "mocks"), faux::methods)]
 impl UserRepository {
     /// Create a new `UserRepository`
     #[must_use]
@@ -42,13 +40,17 @@ impl UserRepository {
     }
 }
 
+#[cfg_attr(any(test, feature = "mocks"), faux::methods)]
 #[async_trait::async_trait]
 impl Repository for UserRepository {
     type Entity = User;
     type Key = Uuid;
     type Error = ();
 
-    async fn create(&self, new: Self::Entity) -> Result<Self::Entity, Self::Error> {
+    async fn create(
+        &self,
+        new: <UserRepository as Repository>::Entity,
+    ) -> Result<<UserRepository as Repository>::Entity, <UserRepository as Repository>::Error> {
         sqlx::query_as!(
             Self::Entity,
             "INSERT INTO users (username, password, email) VALUES ($1, $2, $3) RETURNING *",
@@ -63,17 +65,23 @@ impl Repository for UserRepository {
 
     async fn update(
         &self,
-        _key: Self::Key,
-        _entity: Self::Entity,
-    ) -> Result<Self::Entity, Self::Error> {
+        _key: <UserRepository as Repository>::Key,
+        _entity: <UserRepository as Repository>::Entity,
+    ) -> Result<<UserRepository as Repository>::Entity, <UserRepository as Repository>::Error> {
         Err(())
     }
 
-    async fn delete(&self, _key: Self::Key) -> Result<(), Self::Error> {
+    async fn delete(
+        &self,
+        _key: <UserRepository as Repository>::Key,
+    ) -> Result<(), <UserRepository as Repository>::Error> {
         Ok(())
     }
 
-    async fn find_by_id(&self, key: Self::Key) -> Option<Self::Entity> {
+    async fn find_by_id(
+        &self,
+        key: <UserRepository as Repository>::Key,
+    ) -> Option<<UserRepository as Repository>::Entity> {
         sqlx::query_as!(Self::Entity, "SELECT * FROM users WHERE id = $1", key)
             .fetch_one(&self.pool)
             .await

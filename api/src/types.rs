@@ -1,6 +1,7 @@
+use chrono::NaiveDateTime;
 use domain::user_types::User as DomainUser;
 use serde::{Deserialize, Serialize};
-use sqlx::types::{chrono::NaiveDateTime, Uuid};
+use uuid::Uuid;
 
 #[derive(Deserialize, Serialize, PartialEq, Eq, Debug)]
 pub struct User {

@@ -13,7 +13,7 @@ readme = "README.md"
 
 [features]
 default = []
-mocks = ["mockall"]
+mocks = ["faux"]
 
 [dependencies]
 sqlx = { version = "0.5", features = [ "runtime-tokio-rustls", "postgres", "macros", "migrate", "uuid", "json", "chrono" ] }
@@ -23,6 +23,7 @@ uuid = { version = "0.8", features = ["v4", "serde"] }
 chrono = { version = "0.4", features = ["serde"] }
 thiserror = "1.0"
 
-mockall = { version = "0.10", optional = true }
+faux = { version = "^0.1", optional = true }
 
 [dev-dependencies]
+faux = "^0.1"

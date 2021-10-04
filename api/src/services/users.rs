@@ -49,9 +49,10 @@ impl AbstractService for UserService {
 
 #[cfg(test)]
 mod test {
-    use domain::user_types::{mocks::MockUser, User};
-    use mockall::predicate;
-    use sqlx::types::{chrono::Utc, Uuid};
+    use chrono::Utc;
+    use domain::user_types::{User, UserRepository};
+    use faux::when;
+    use uuid::Uuid;
 
     use super::super::super::types::User as ApiUser;
     use super::Service;
@@ -68,14 +69,10 @@ mod test {
             updated_at: Utc::now().naive_utc(),
         };
         let expected_user = ApiUser::from(mock_user.clone());
-        let mut mock_user_repo = MockUser::new();
-        mock_user_repo
-            .expect_find_by_id()
-            .with(predicate::eq(mock_user.id))
-            .times(1)
-            .returning(move |_| Some(mock_user.clone()));
+        let mut user_repo = UserRepository::faux();
+        when!(user_repo.find_by_id(expected_user.id)).then_return(Some(mock_user.clone()));
 
-        let service = Service::new(mock_user_repo);
+        let service = Service::new(user_repo);
 
         assert_eq!(expected_user, service.get_user(expected_user.id).await);
     }
@@ -94,14 +91,10 @@ mod test {
 
         let input_user = mock_user.clone();
         let expected_user = ApiUser::from(mock_user.clone());
-        let mut mock_user_repo = MockUser::new();
-        mock_user_repo
-            .expect_create()
-            .with(predicate::eq(mock_user.clone()))
-            .times(1)
-            .returning(move |_| Ok(mock_user.clone()));
+        let mut user_repo = UserRepository::faux();
+        when!(user_repo.create(mock_user.clone())).then_return(Ok(mock_user.clone()));
 
-        let service = Service::new(mock_user_repo);
+        let service = Service::new(user_repo);
 
         assert_eq!(
             expected_user,
