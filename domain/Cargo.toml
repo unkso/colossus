@@ -17,6 +17,7 @@ mocks = ["faux"]
 
 [dependencies]
 sqlx = { version = "0.5", features = [ "runtime-tokio-rustls", "postgres", "macros", "migrate", "uuid", "json", "chrono" ] }
+sea-orm = { version = "^0", default-features = false, features = [ "sqlx-postgres", "macros", "debug-print" ] }
 async-trait = "0.1"
 serde = { version = "1.0", features = ["derive"] }
 uuid = { version = "0.8", features = ["v4", "serde"] }
